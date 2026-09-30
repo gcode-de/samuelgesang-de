@@ -122,7 +122,7 @@
     .project h3 { position: relative; z-index: 1; max-width: 490px; margin: 40px 0 10px; font-size: clamp(2rem, 3.5vw, 3.45rem); line-height: .94; letter-spacing: -.07em; }
     .project p { position: relative; z-index: 1; max-width: 440px; margin-bottom: 0; color: rgba(255,255,255,.78); }
     .project .open { position: absolute; z-index: 2; left: 26px; bottom: 22px; display: flex; align-items: center; gap: 8px; color: var(--surface); font-size: .86rem; font-weight: 700; }
-    .project .open b { display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; font-size: 1rem; font-weight: 400; }
+    .project .open b { display: grid; place-items: center; width: 25px; height: 25px; padding: 0 0 2px; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; font-size: 1.05rem; font-weight: 400; line-height: 1; }
     .process { background: var(--sand); }
     .process-grid { display: grid; grid-template-columns: 1fr 1.7fr; gap: 46px; }
     .process-list { list-style: none; padding: 0; margin: 0; counter-reset: process; }
@@ -149,6 +149,22 @@
     .work-card small { color: var(--moss); font-family: ui-monospace, monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
     .work-card h3 { margin: 29px 0 11px; font-size: 1.55rem; line-height: 1; letter-spacing: -.05em; }
     .work-card p { margin: 0; color: #52524d; }
+    .archive { background: #e7e4dc; }
+    .archive-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 18px; align-items: stretch; }
+    .archive-copy, .archive-card { padding: clamp(25px, 4vw, 38px); border-radius: var(--radius); }
+    .archive-copy { background: var(--surface); box-shadow: var(--shadow); }
+    .archive-copy p { max-width: 610px; margin-bottom: 0; color: #52524d; font-size: 1.06rem; }
+    .archive-cards { display: grid; gap: 18px; }
+    .archive-card { display: flex; flex-direction: column; justify-content: space-between; min-height: 190px; color: var(--surface); background: var(--deep); }
+    .archive-card:nth-child(2) { color: var(--ink); background: var(--lime); }
+    .archive-card small { color: var(--lime); font-family: ui-monospace, monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .archive-card:nth-child(2) small { color: var(--moss); }
+    .archive-card h3 { max-width: 390px; margin: 32px 0 10px; font-size: clamp(1.65rem, 2.8vw, 2.35rem); line-height: .98; letter-spacing: -.06em; }
+    .archive-card p { max-width: 430px; margin: 0; color: rgba(255,255,255,.75); }
+    .archive-card:nth-child(2) p { color: #4d534b; }
+    .archive-link, .modal-actions a { display: inline-flex; align-items: center; gap: 8px; width: fit-content; margin-top: 22px; color: inherit; font-size: .9rem; font-weight: 700; text-decoration: none; }
+    .archive-link::after, .modal-actions a::after { content: "↗"; font-size: 1.05rem; }
+    .archive-link:hover, .modal-actions a:hover { color: var(--moss); }
     .contact { background: var(--ink); color: var(--surface); }
     .contact-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: end; }
     .contact h2 { max-width: 650px; font-size: clamp(3rem, 6vw, 6.2rem); }
@@ -191,11 +207,13 @@
     .modal-facts div { padding: 14px; border-radius: 12px; background: var(--paper); }
     .modal-facts small { display: block; margin-bottom: 4px; color: var(--moss); font-family: ui-monospace, monospace; font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
     .modal-facts strong { font-size: .93rem; }
+    .modal-actions { display: flex; flex-wrap: wrap; gap: 10px 23px; margin-top: 25px; }
+    .modal-actions a { margin-top: 0; color: var(--ink); }
     @media (max-width: 820px) {
       .nav-links { display: none; position: absolute; top: 72px; left: 0; right: 0; padding: 16px 20px 22px; border-bottom: 1px solid var(--line); background: var(--paper); flex-direction: column; align-items: flex-start; }
       .nav-links.open { display: flex; }
       .menu-button { display: block; }
-      .hero-grid, .section-head, .process-grid, .contact-grid { grid-template-columns: 1fr; }
+      .hero-grid, .section-head, .process-grid, .contact-grid, .archive-grid { grid-template-columns: 1fr; }
       .hero-aside { width: min(420px, 86%); margin: 25px 0 0 auto; }
       .section-head { gap: 18px; }
       .lens-content { grid-template-columns: 1fr; }
@@ -240,6 +258,7 @@
         <a href="#projekte">Projekte</a>
         <a href="#arbeitsweise">Arbeitsweise</a>
         <a href="#weg">Weg</a>
+        <a href="#archiv">Archiv</a>
         <a href="#zusammenarbeit">Zusammenarbeit</a>
         <a class="button dark" href="#kontakt">Kontakt <span class="button-arrow">↗</span></a>
       </div>
@@ -332,6 +351,24 @@
       <div class="moment-detail" id="moment-detail">Kreative Selbstständigkeit bedeutete: zuhören, Verantwortung übernehmen und zuverlässig ein Ergebnis liefern. Diese Erfahrung prägt bis heute, wie ich über Nutzer und Auftraggeber denke.</div>
     </section>
 
+    <section class="section archive" id="archiv" aria-labelledby="archive-title">
+      <div class="shell">
+        <div class="section-head">
+          <div><p class="eyebrow">Archiv</p><h2 id="archive-title">Fotografie bleibt Teil meines Weges.</h2></div>
+          <p class="section-intro">Über viele Jahre habe ich fotografiert, Kunden begleitet und sichtbare Ergebnisse geschaffen. Heute liegt mein Schwerpunkt auf Software, die Erfahrung aus dieser Zeit bleibt.</p>
+        </div>
+        <div class="archive-grid">
+          <div class="archive-copy">
+            <p>Die Fotografie hat mich gelehrt, genau hinzusehen, gut zuzuhören und auch unter Zeitdruck zuverlässig zu arbeiten. Diese Haltung bringe ich heute in digitale Projekte ein. Gleichzeitig läuft Fotobox-BW weiter als eigenes Praxisfeld für Kundenkommunikation und Automatisierung.</p>
+          </div>
+          <div class="archive-cards">
+            <article class="archive-card"><small>Heute</small><h3>Fotobox-BW</h3><p>Fotobox-Vermietung für Feiern und Unternehmen. Ein echter Betrieb, an dem ich Abläufe und praktische Automatisierung erprobe.</p><a class="archive-link" href="https://fotobox-bw.de/" rel="noopener noreferrer" target="_blank">Fotobox-BW ansehen</a></article>
+            <article class="archive-card"><small>2011 bis 2025</small><h3>Gesang Photo</h3><p>Mein fotografisches Archiv mit Hochzeiten, Porträts und Geschichten aus vielen Jahren selbstständiger Arbeit.</p><a class="archive-link" href="https://gesang-photo.com/portfolio/" rel="noopener noreferrer" target="_blank">Zum Fotoarchiv</a></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <section class="section shell" id="zusammenarbeit" aria-labelledby="work-title">
       <div class="section-head">
         <div><p class="eyebrow">Zusammenarbeit</p><h2 id="work-title">Wo ich helfen kann.</h2></div>
@@ -359,7 +396,7 @@
   <footer class="contact"><div class="shell"><span>© <span id="year"></span> Samuel Gesang</span><nav class="footer-links" aria-label="Rechtliches und Profile"><a href="/impressum.html">Impressum</a><a href="/datenschutz.html">Datenschutz</a><a href="https://github.com/gcode-de/samuelgesang-de" rel="noopener noreferrer" target="_blank">GitHub</a></nav></div></footer>
 
   <dialog id="project-modal" aria-labelledby="modal-title">
-    <div class="modal-inner"><button class="modal-close" id="modal-close" aria-label="Projektfenster schließen">×</button><p class="modal-label" id="modal-label"></p><h3 id="modal-title"></h3><div class="project-visual" id="modal-visual" aria-hidden="true"></div><p id="modal-copy"></p><div class="modal-facts" id="modal-facts"></div></div>
+    <div class="modal-inner"><button class="modal-close" id="modal-close" aria-label="Projektfenster schließen">×</button><p class="modal-label" id="modal-label"></p><h3 id="modal-title"></h3><div class="project-visual" id="modal-visual" aria-hidden="true"></div><p id="modal-copy"></p><div class="modal-actions" id="modal-actions"></div><div class="modal-facts" id="modal-facts"></div></div>
   </dialog>
 
   <script>
@@ -381,10 +418,10 @@
       }
     };
     const projects = {
-      asset: { label: 'React · TypeScript · Qualität', title: 'Asset Tracker', copy: 'Ein Portfolio-Tracker für Menschen, deren Vermögen auf Broker, Wallets, Edelmetalle, Immobilien und Konten verteilt ist. Eine Oberfläche bringt Werte, Verteilung und Entwicklung zusammen.', facts: [['Problem', 'Vermögen ist auf mehrere Stellen verteilt'], ['Technik', 'Next.js, TypeScript, MongoDB'], ['Qualität', 'Vitest, Playwright und belastbare Demo']] },
-      sitemap: { label: 'Spring Boot · React · Docker', title: 'SitemapDiff', copy: 'SitemapDiff beobachtet Websites über ihre Sitemaps und macht neue oder entfernte Seiten sichtbar. So müssen Teams Veränderungen nicht zwischen langen URL-Listen suchen.', facts: [['Problem', 'Änderungen auf wichtigen Websites gehen leicht unter'], ['Technik', 'React, Spring Boot, MongoDB, Docker'], ['Ablauf', 'Manuelle oder geplante Crawls, Diff und CSV-Export']] },
-      fotobox: { label: 'n8n · IMAP · Prüfregeln', title: 'Fotobox-BW Mailassistenz', copy: 'Neue Kundenmails und anstehende Veranstaltungen werden geprüft. Nur wenn Empfänger und Angaben eindeutig sind, entsteht ein Entwurf im Mailpostfach. Samuel prüft ihn und sendet selbst.', facts: [['Ablauf', 'Mail, Kalender und Auftragskontext prüfen'], ['Sicherheitsnetz', 'Kein Entwurf bei unklarer Zuordnung oder offenen Angaben'], ['Versand', 'Bewusst immer manuell durch Samuel']] },
-      board: { label: 'Next.js · TypeScript · PostgreSQL', title: 'Feature Request Board', copy: 'Ein internes Board, damit Produktideen nicht in Chats und E-Mails hängen bleiben. Mitarbeiter reichen Ideen ein, besprechen sie und verfolgen Entscheidungen später nach.', facts: [['Ablauf', 'Einreichen, kommentieren, priorisieren'], ['Rechte', 'Mitarbeiter, Product Owner und Administratoren'], ['Nachvollziehbarkeit', 'Status- und Prioritätsänderungen im Audit Log']] }
+      asset: { label: 'React · TypeScript · Qualität', title: 'Asset Tracker', copy: 'Ein Portfolio-Tracker für Menschen, deren Vermögen auf Broker, Wallets, Edelmetalle, Immobilien und Konten verteilt ist. Eine Oberfläche bringt Werte, Verteilung und Entwicklung zusammen.', facts: [['Problem', 'Vermögen ist auf mehrere Stellen verteilt'], ['Technik', 'Next.js, TypeScript, MongoDB'], ['Qualität', 'Vitest, Playwright und belastbare Demo']], links: [['GitHub-Repository', 'https://github.com/gcode-de/Asset-Tracker'], ['Interaktive Demo', 'https://asset-tracker.samuelgesang.de/?demo=true']] },
+      sitemap: { label: 'Spring Boot · React · Docker', title: 'SitemapDiff', copy: 'SitemapDiff beobachtet Websites über ihre Sitemaps und macht neue oder entfernte Seiten sichtbar. So müssen Teams Veränderungen nicht zwischen langen URL-Listen suchen.', facts: [['Problem', 'Änderungen auf wichtigen Websites gehen leicht unter'], ['Technik', 'React, Spring Boot, MongoDB, Docker'], ['Ablauf', 'Manuelle oder geplante Crawls, Diff und CSV-Export']], links: [['GitHub-Repository', 'https://github.com/gcode-de/SitemapDiff'], ['Live-Demo', 'https://sitemapdiff8.fly.dev/']] },
+      fotobox: { label: 'n8n · IMAP · Prüfregeln', title: 'Fotobox-BW Mailassistenz', copy: 'Neue Kundenmails und anstehende Veranstaltungen werden geprüft. Nur wenn Empfänger und Angaben eindeutig sind, entsteht ein Entwurf im Mailpostfach. Samuel prüft ihn und sendet selbst.', facts: [['Ablauf', 'Mail, Kalender und Auftragskontext prüfen'], ['Sicherheitsnetz', 'Kein Entwurf bei unklarer Zuordnung oder offenen Angaben'], ['Versand', 'Bewusst immer manuell durch Samuel']], links: [['Fotobox-BW besuchen', 'https://fotobox-bw.de/']] },
+      board: { label: 'Next.js · TypeScript · PostgreSQL', title: 'Feature Request Board', copy: 'Ein internes Board, damit Produktideen nicht in Chats und E-Mails hängen bleiben. Mitarbeiter reichen Ideen ein, besprechen sie und verfolgen Entscheidungen später nach.', facts: [['Ablauf', 'Einreichen, kommentieren, priorisieren'], ['Rechte', 'Mitarbeiter, Product Owner und Administratoren'], ['Nachvollziehbarkeit', 'Status- und Prioritätsänderungen im Audit Log']], links: [['GitHub-Repository', 'https://github.com/gcode-de/internal-feature-request-board']] }
     };
     const projectVisuals = {
       asset: `<svg viewBox="0 0 570 190" role="img" aria-label="Abstrakte Oberfläche für Asset Tracker"><path class="grid-line" d="M30 42H540M30 86H540M30 130H540M30 174H540"/><rect x="30" y="20" width="510" height="147" rx="10" fill="rgba(255,255,255,.06)"/><rect x="49" y="42" width="132" height="13" rx="6" class="node"/><rect x="49" y="76" width="217" height="10" rx="5" fill="rgba(255,255,255,.35)"/><rect x="49" y="105" width="165" height="10" rx="5" fill="rgba(255,255,255,.22)"/><rect x="49" y="134" width="102" height="10" rx="5" fill="rgba(255,255,255,.22)"/><rect x="310" y="62" width="182" height="72" rx="9" fill="rgba(255,255,255,.11)"/><circle cx="338" cy="88" r="10" class="node-soft"/><path class="wire" d="M366 82h96M366 104h64"/><text x="48" y="157" class="label">ASSET OVERVIEW</text></svg>`,
@@ -411,8 +448,8 @@
     }
     lensButtons.forEach(button => button.addEventListener('click', () => setLens(button.dataset.lens)));
     const modal = document.querySelector('#project-modal');
-    const modalLabel = document.querySelector('#modal-label'); const modalTitle = document.querySelector('#modal-title'); const modalCopy = document.querySelector('#modal-copy'); const modalFacts = document.querySelector('#modal-facts'); const modalVisual = document.querySelector('#modal-visual');
-    document.querySelectorAll('.project').forEach(project => project.addEventListener('click', () => { const key = project.dataset.project; const data = projects[key]; modalLabel.textContent = data.label; modalTitle.textContent = data.title; modalVisual.innerHTML = projectVisuals[key]; modalCopy.textContent = data.copy; modalFacts.innerHTML = data.facts.map(([key, value]) => `<div><small>${key}</small><strong>${value}</strong></div>`).join(''); modal.showModal(); document.querySelector('#modal-close').focus(); }));
+    const modalLabel = document.querySelector('#modal-label'); const modalTitle = document.querySelector('#modal-title'); const modalCopy = document.querySelector('#modal-copy'); const modalFacts = document.querySelector('#modal-facts'); const modalActions = document.querySelector('#modal-actions'); const modalVisual = document.querySelector('#modal-visual');
+    document.querySelectorAll('.project').forEach(project => project.addEventListener('click', () => { const key = project.dataset.project; const data = projects[key]; modalLabel.textContent = data.label; modalTitle.textContent = data.title; modalVisual.innerHTML = projectVisuals[key]; modalCopy.textContent = data.copy; modalFacts.innerHTML = data.facts.map(([key, value]) => `<div><small>${key}</small><strong>${value}</strong></div>`).join(''); modalActions.innerHTML = data.links.map(([label, href]) => `<a href="${href}" rel="noopener noreferrer" target="_blank">${label}</a>`).join(''); modal.showModal(); document.querySelector('#modal-close').focus(); }));
     document.querySelector('#modal-close').addEventListener('click', () => modal.close());
     modal.addEventListener('click', event => { if (event.target === modal) modal.close(); });
     const moments = document.querySelectorAll('.moment'); const momentDetail = document.querySelector('#moment-detail');
