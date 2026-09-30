@@ -1,0 +1,401 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Samuel Gesang entwickelt digitale Produkte und praktische Systeme.">
+  <title>Samuel Gesang · Digitale Produkte & Systeme</title>
+  <style>
+    :root {
+      --ink: #171716;
+      --paper: #f5f4ef;
+      --surface: #fffefa;
+      --muted: #696861;
+      --line: rgba(23, 23, 22, .14);
+      --deep: #202b27;
+      --moss: #4d6658;
+      --lime: #d9ef81;
+      --clay: #e99d70;
+      --blue: #9cc9e6;
+      --sand: #e9dfc7;
+      --shadow: 0 1px 0 rgba(255,255,255,.72) inset, 0 14px 30px rgba(29,35,30,.08);
+      --radius: 22px;
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-feature-settings: "kern" 1, "liga" 1;
+      line-height: 1.5;
+    }
+    button, input, textarea { font: inherit; }
+    a { color: inherit; }
+    .shell { width: min(var(--max), calc(100% - 40px)); margin: 0 auto; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; margin: 0 0 18px;
+      color: var(--moss); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    }
+    .eyebrow::before { content: ""; display: block; width: 21px; height: 1px; background: currentColor; }
+    .site-header {
+      position: sticky; top: 0; z-index: 10; border-bottom: 1px solid transparent;
+      background: color-mix(in srgb, var(--paper) 83%, transparent); backdrop-filter: blur(12px);
+      transition: border-color .25s ease;
+    }
+    .site-header.is-scrolled { border-color: var(--line); }
+    .nav { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+    .brand { text-decoration: none; display: flex; align-items: center; gap: 10px; font-weight: 760; letter-spacing: -.04em; }
+    .brand-mark { width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--ink); color: var(--lime); font-size: .75rem; letter-spacing: 0; }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { text-decoration: none; color: var(--muted); font-size: .9rem; font-weight: 600; }
+    .nav-links a:hover { color: var(--ink); }
+    .menu-button { display: none; border: 0; background: none; color: var(--ink); padding: 10px; min-width: 44px; min-height: 44px; }
+    .menu-button span { display: block; width: 21px; height: 1.5px; margin: 5px auto; background: currentColor; }
+    .button {
+      display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 46px;
+      padding: 11px 18px; border: 1px solid var(--ink); border-radius: 100px; text-decoration: none;
+      cursor: pointer; color: var(--ink); background: transparent; font-size: .9rem; font-weight: 700;
+      transition: transform .2s ease, background .2s ease, color .2s ease, box-shadow .2s ease;
+    }
+    .button:hover { transform: translateY(-2px); box-shadow: 0 7px 0 rgba(23,23,22,.13); }
+    .button:focus-visible, .lens:focus-visible, .project:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid var(--blue); outline-offset: 3px; }
+    .button.dark { background: var(--ink); color: var(--surface); }
+    .button.dark:hover { background: var(--moss); }
+    .button-arrow { font-size: 1.1rem; line-height: .8; }
+    .hero { padding: clamp(54px, 8vw, 116px) 0 64px; overflow: hidden; }
+    .hero-grid { display: grid; grid-template-columns: 1.18fr .82fr; gap: clamp(36px, 7vw, 108px); align-items: end; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 { max-width: 810px; margin-bottom: 26px; font-size: clamp(3.3rem, 8vw, 7.2rem); line-height: .89; letter-spacing: -.078em; font-weight: 740; text-wrap: balance; }
+    .hero h1 em { color: var(--moss); font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: -.09em; }
+    .hero-copy { max-width: 625px; font-size: clamp(1.08rem, 1.7vw, 1.3rem); color: #484842; text-wrap: pretty; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .signal { margin-top: 58px; display: flex; gap: 14px; align-items: center; color: var(--muted); font-size: .85rem; }
+    .signal i { position: relative; width: 11px; height: 11px; display: inline-block; border-radius: 50%; background: var(--moss); box-shadow: 0 0 0 6px rgba(77,102,88,.13); }
+    .hero-aside { position: relative; padding: 17px; background: var(--surface); border-radius: 30px; box-shadow: var(--shadow); transform: rotate(1.6deg); }
+    .hero-aside::after { content: ""; position: absolute; z-index: -1; inset: 20px -16px -13px 22px; border-radius: 30px; background: var(--lime); transform: rotate(-4deg); }
+    .portrait { display: block; width: 100%; aspect-ratio: 4/4.7; object-fit: cover; object-position: 50% 21%; border-radius: 19px; filter: grayscale(1) contrast(1.06); }
+    .portrait-note { position: absolute; right: -10px; bottom: 30px; width: min(240px, 70%); padding: 16px; border-radius: 13px; background: var(--ink); color: var(--surface); box-shadow: 0 16px 30px rgba(23,23,22,.2); transform: rotate(-3deg); }
+    .portrait-note strong { display: block; margin-bottom: 3px; font-size: .95rem; }
+    .portrait-note span { color: #d2d2ca; font-size: .78rem; line-height: 1.35; }
+    .section { padding: clamp(78px, 11vw, 138px) 0; }
+    .section-head { display: grid; grid-template-columns: .7fr 1.3fr; gap: 44px; align-items: start; margin-bottom: 42px; }
+    h2 { margin-bottom: 0; font-size: clamp(2.35rem, 4vw, 4.4rem); line-height: .94; letter-spacing: -.066em; text-wrap: balance; }
+    .section-intro { max-width: 610px; margin: 8px 0 0; color: var(--muted); font-size: 1.1rem; text-wrap: pretty; }
+    .lens-panel { border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+    .lens-tabs { display: grid; grid-template-columns: repeat(3, 1fr); }
+    .lens { appearance: none; border: 0; border-right: 1px solid var(--line); padding: 22px 22px 20px; background: transparent; text-align: left; cursor: pointer; transition: background .2s ease; }
+    .lens:last-child { border-right: 0; }
+    .lens:hover, .lens[aria-selected="true"] { background: var(--surface); }
+    .lens[aria-selected="true"] { box-shadow: inset 0 4px 0 var(--moss); }
+    .lens small { display: block; color: var(--moss); font-family: ui-monospace, monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .lens strong { display: block; margin-top: 7px; font-size: 1.12rem; letter-spacing: -.025em; }
+    .lens-content { min-height: 270px; display: grid; grid-template-columns: 1.3fr .7fr; gap: 32px; padding: 34px 0 0; }
+    .lens-content h3 { margin: 0 0 12px; font-size: clamp(1.65rem, 3vw, 2.65rem); line-height: 1; letter-spacing: -.06em; }
+    .lens-content p { max-width: 660px; color: var(--muted); font-size: 1.06rem; }
+    .lens-points { display: grid; gap: 10px; align-content: start; padding: 6px 0 24px; }
+    .lens-points div { padding: 11px 0; border-bottom: 1px solid var(--line); font-size: .93rem; font-weight: 650; }
+    .lens-points div::before { content: "↗"; display: inline-block; margin-right: 10px; color: var(--moss); }
+    .dark-section { background: var(--deep); color: var(--surface); }
+    .dark-section .eyebrow, .dark-section .project-meta { color: var(--lime); }
+    .dark-section .section-intro { color: #c6c9c1; }
+    .project-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 18px; }
+    .project { position: relative; min-height: 360px; overflow: hidden; border: 0; border-radius: var(--radius); padding: 26px; color: inherit; background: #293632; text-align: left; cursor: pointer; transition: transform .25s ease, box-shadow .25s ease; }
+    .project:hover { transform: translateY(-6px) rotate(.2deg); box-shadow: 0 20px 33px rgba(0,0,0,.26); }
+    .project:nth-child(1) { grid-column: span 7; background: #33443e; }
+    .project:nth-child(2) { grid-column: span 5; background: #604f42; }
+    .project:nth-child(3) { grid-column: span 5; background: #355067; }
+    .project:nth-child(4) { grid-column: span 7; background: #665c36; }
+    .project::before { content: ""; position: absolute; width: 230px; height: 230px; border: 1px solid rgba(255,255,255,.26); border-radius: 50%; right: -65px; bottom: -95px; box-shadow: 0 0 0 33px rgba(255,255,255,.06), 0 0 0 66px rgba(255,255,255,.035); }
+    .project::after { content: attr(data-index); position: absolute; right: 22px; top: 14px; color: rgba(255,255,255,.23); font-family: Georgia, serif; font-size: 5.8rem; font-style: italic; line-height: 1; }
+    .project-meta { position: relative; z-index: 1; font-family: ui-monospace, monospace; font-size: .7rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .project h3 { position: relative; z-index: 1; max-width: 490px; margin: 40px 0 10px; font-size: clamp(2rem, 3.5vw, 3.45rem); line-height: .94; letter-spacing: -.07em; }
+    .project p { position: relative; z-index: 1; max-width: 440px; margin-bottom: 0; color: rgba(255,255,255,.78); }
+    .project .open { position: absolute; z-index: 2; left: 26px; bottom: 22px; display: flex; align-items: center; gap: 8px; color: var(--surface); font-size: .86rem; font-weight: 700; }
+    .project .open b { display: grid; place-items: center; width: 25px; height: 25px; border: 1px solid rgba(255,255,255,.45); border-radius: 50%; font-size: 1rem; font-weight: 400; }
+    .process { background: var(--sand); }
+    .process-grid { display: grid; grid-template-columns: 1fr 1.7fr; gap: 46px; }
+    .process-list { list-style: none; padding: 0; margin: 0; counter-reset: process; }
+    .process-list li { display: grid; grid-template-columns: 46px 1fr; gap: 20px; padding: 23px 0; border-top: 1px solid var(--ink); }
+    .process-list li:last-child { border-bottom: 1px solid var(--ink); }
+    .process-list li::before { counter-increment: process; content: "0" counter(process); padding-top: 3px; color: var(--moss); font-family: ui-monospace, monospace; font-size: .76rem; font-weight: 700; }
+    .process-list h3 { margin: 0 0 6px; font-size: 1.3rem; letter-spacing: -.04em; }
+    .process-list p { margin: 0; color: #5a584f; }
+    .process-aside { align-self: end; padding: 30px; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .process-aside .quote { margin: 0; font-family: Georgia, serif; font-size: clamp(1.6rem, 2.5vw, 2.35rem); line-height: 1.08; letter-spacing: -.04em; }
+    .process-aside .quote + p { margin: 24px 0 0; color: var(--muted); }
+    .timeline { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--ink); border-bottom: 1px solid var(--ink); }
+    .moment { min-height: 298px; padding: 20px 18px 25px; border-right: 1px solid var(--line); cursor: pointer; transition: background .2s ease; }
+    .moment:last-child { border-right: 0; }
+    .moment:hover, .moment.active { background: var(--surface); }
+    .moment time { display: block; color: var(--moss); font-family: ui-monospace, monospace; font-size: .72rem; font-weight: 700; }
+    .moment h3 { margin: 48px 0 11px; font-size: 1.3rem; line-height: 1; letter-spacing: -.045em; }
+    .moment p { margin: 0; color: var(--muted); font-size: .9rem; }
+    .moment-detail { max-width: 760px; min-height: 90px; padding: 22px 0 0; color: var(--muted); font-size: 1.02rem; }
+    .work-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .work-card { min-height: 250px; padding: 26px; border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow); }
+    .work-card:nth-child(2) { background: var(--lime); }
+    .work-card:nth-child(3) { background: var(--blue); }
+    .work-card small { color: var(--moss); font-family: ui-monospace, monospace; font-size: .68rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .work-card h3 { margin: 29px 0 11px; font-size: 1.55rem; line-height: 1; letter-spacing: -.05em; }
+    .work-card p { margin: 0; color: #52524d; }
+    .contact { background: var(--ink); color: var(--surface); }
+    .contact-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 56px; align-items: end; }
+    .contact h2 { max-width: 650px; font-size: clamp(3rem, 6vw, 6.2rem); }
+    .contact h2 em { color: var(--lime); font-family: Georgia, serif; font-weight: 400; }
+    .contact p { max-width: 570px; color: #cacbc3; font-size: 1.08rem; }
+    .contact-form { display: grid; gap: 12px; padding: 22px; border: 1px solid rgba(255,255,255,.25); border-radius: var(--radius); background: rgba(255,255,255,.04); }
+    label { display: grid; gap: 6px; color: #cfd0c9; font-size: .82rem; font-weight: 700; }
+    input, textarea { width: 100%; padding: 11px 12px; border: 1px solid rgba(255,255,255,.25); border-radius: 10px; color: var(--surface); background: rgba(255,255,255,.06); }
+    textarea { min-height: 96px; resize: vertical; }
+    .contact-form .button { border-color: var(--lime); background: var(--lime); color: var(--ink); }
+    .form-status { min-height: 1.3em; margin: 1px 0 0; color: #d5d7cf; font-size: .8rem; }
+    footer { padding: 22px 0; color: #aeb0a8; border-top: 1px solid rgba(255,255,255,.17); font-size: .82rem; }
+    footer .shell { display: flex; justify-content: space-between; gap: 18px; }
+    dialog { width: min(700px, calc(100% - 32px)); max-height: min(700px, calc(100% - 32px)); border: 0; border-radius: 24px; padding: 0; background: var(--surface); box-shadow: 0 26px 90px rgba(0,0,0,.34); }
+    dialog::backdrop { background: rgba(19,25,22,.64); backdrop-filter: blur(3px); }
+    .modal-inner { position: relative; padding: clamp(28px, 5vw, 52px); }
+    .modal-close { position: absolute; top: 20px; right: 20px; display: grid; place-items: center; width: 40px; height: 40px; padding: 0 0 2px; border: 1px solid var(--line); border-radius: 50%; background: transparent; cursor: pointer; font-size: 1.55rem; line-height: 1; }
+    .modal-label { margin: 0 0 16px; color: var(--moss); font-family: ui-monospace, monospace; font-size: .72rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+    .modal-inner h3 { max-width: 520px; margin: 0 48px 16px 0; font-size: clamp(2.3rem, 6vw, 4.4rem); line-height: .92; letter-spacing: -.07em; }
+    .modal-inner p { max-width: 620px; color: var(--muted); font-size: 1.07rem; }
+    .project-visual { position: relative; display: grid; place-items: center; min-height: 190px; margin: 26px 0; overflow: hidden; border-radius: 16px; background: var(--deep); }
+    .project-visual svg { width: 100%; max-width: 570px; height: 190px; }
+    .project-visual .grid-line { stroke: rgba(255,255,255,.16); stroke-width: 1; }
+    .project-visual .node { fill: var(--lime); }
+    .project-visual .node-soft { fill: var(--blue); }
+    .project-visual .node-warm { fill: var(--clay); }
+    .project-visual .wire { fill: none; stroke: rgba(255,255,255,.68); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .project-visual .label { fill: rgba(255,255,255,.72); font-family: ui-monospace, monospace; font-size: 11px; font-weight: 700; letter-spacing: 1px; }
+    .modal-facts { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 28px 0; }
+    .modal-facts div { padding: 14px; border-radius: 12px; background: var(--paper); }
+    .modal-facts small { display: block; margin-bottom: 4px; color: var(--moss); font-family: ui-monospace, monospace; font-size: .65rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+    .modal-facts strong { font-size: .93rem; }
+    @media (max-width: 820px) {
+      .nav-links { display: none; position: absolute; top: 72px; left: 0; right: 0; padding: 16px 20px 22px; border-bottom: 1px solid var(--line); background: var(--paper); flex-direction: column; align-items: flex-start; }
+      .nav-links.open { display: flex; }
+      .menu-button { display: block; }
+      .hero-grid, .section-head, .process-grid, .contact-grid { grid-template-columns: 1fr; }
+      .hero-aside { width: min(420px, 86%); margin: 25px 0 0 auto; }
+      .section-head { gap: 18px; }
+      .lens-content { grid-template-columns: 1fr; }
+      .project:nth-child(n) { grid-column: span 12; }
+      .work-grid { grid-template-columns: 1fr; }
+      .timeline { overflow-x: auto; grid-template-columns: repeat(5, minmax(210px, 1fr)); }
+      .moment { min-height: 255px; }
+      .lens-tabs { overflow-x: auto; grid-template-columns: repeat(3, minmax(185px, 1fr)); }
+    }
+    @media (max-width: 520px) {
+      .shell { width: min(var(--max), calc(100% - 28px)); }
+      .hero { padding-top: 45px; }
+      h1 { font-size: clamp(3.1rem, 16vw, 4.6rem); }
+      .hero-aside { width: 92%; padding: 12px; }
+      .portrait-note { right: -8px; bottom: 16px; padding: 12px; }
+      .hero-actions .button { width: 100%; }
+      .section { padding: 76px 0; }
+      .project { min-height: 330px; padding: 21px; }
+      .project .open { left: 21px; }
+      .project h3 { margin-top: 34px; }
+      .modal-facts { grid-template-columns: 1fr; }
+      footer .shell { flex-direction: column; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header" id="top">
+    <nav class="nav shell" aria-label="Hauptnavigation">
+      <a class="brand" href="#top" aria-label="Zur Startseite"><span class="brand-mark">SG</span> Samuel Gesang</a>
+      <button class="menu-button" id="menu-button" aria-expanded="false" aria-controls="nav-links" aria-label="Navigation öffnen"><span></span><span></span></button>
+      <div class="nav-links" id="nav-links">
+        <a href="#projekte">Projekte</a>
+        <a href="#arbeitsweise">Arbeitsweise</a>
+        <a href="#weg">Weg</a>
+        <a href="#zusammenarbeit">Zusammenarbeit</a>
+        <a class="button dark" href="#kontakt">Kontakt <span class="button-arrow">↗</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero shell">
+      <div class="hero-grid">
+        <div>
+          <p class="eyebrow">Digitale Produkte & praktische Systeme</p>
+          <h1>Ich mache aus <em>unklaren</em> Anforderungen nutzbare Lösungen.</h1>
+          <p class="hero-copy">Ich entwickle Webanwendungen mit React und TypeScript und verbinde Produktdenken, technische Umsetzung und zuverlässigen Betrieb.</p>
+          <div class="hero-actions">
+            <a class="button dark" href="#projekte">Ausgewählte Projekte <span class="button-arrow">↓</span></a>
+            <a class="button" href="#zusammenarbeit">Wobei ich unterstütze <span class="button-arrow">→</span></a>
+          </div>
+          <div class="signal"><i aria-hidden="true"></i> Aktueller Fokus: React, TypeScript und produktnahe Entwicklung</div>
+        </div>
+        <aside class="hero-aside" aria-label="Porträt von Samuel Gesang">
+          <img class="portrait" src="assets/samuel-gesang.jpg" alt="Porträt von Samuel Gesang">
+          <div class="portrait-note"><strong>Technik für echte Aufgaben.</strong><span>Klar gedacht. Sauber umgesetzt.</span></div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="section shell" aria-labelledby="lenses-title">
+      <div class="section-head">
+        <div><p class="eyebrow">Schneller Einstieg</p><h2 id="lenses-title">Worum es geht.</h2></div>
+        <p class="section-intro">Wähle die Perspektive, die zu deinem Anliegen passt.</p>
+      </div>
+      <div class="lens-panel">
+        <div class="lens-tabs" role="tablist" aria-label="Perspektive wählen">
+          <button class="lens" role="tab" aria-selected="true" aria-controls="lens-copy" id="lens-team" data-lens="team"><small>01 · Produktteam</small><strong>Ich suche Verstärkung</strong></button>
+          <button class="lens" role="tab" aria-selected="false" aria-controls="lens-copy" id="lens-business" data-lens="business"><small>02 · Kleiner Betrieb</small><strong>Wir wollen Zeit sparen</strong></button>
+          <button class="lens" role="tab" aria-selected="false" aria-controls="lens-copy" id="lens-network" data-lens="network"><small>03 · Persönlich</small><strong>Ich möchte Samuel kennenlernen</strong></button>
+        </div>
+        <div class="lens-content" id="lens-copy" role="tabpanel" aria-labelledby="lens-team">
+          <div><h3 id="lens-title">Webanwendungen für Produktteams.</h3><p id="lens-text">Für Teams, die React und TypeScript suchen und Wert auf klare Anforderungen, gute Zusammenarbeit und saubere Umsetzung legen.</p></div>
+          <div class="lens-points" id="lens-points"><div>React, TypeScript und JavaScript</div><div>Tests, CI/CD und brauchbare Demos</div><div>Workshops und Anforderungsklärung</div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section dark-section" id="projekte" aria-labelledby="projects-title">
+      <div class="shell">
+        <div class="section-head">
+          <div><p class="eyebrow">Ausgewählte Arbeiten</p><h2 id="projects-title">Projekte mit Substanz.</h2></div>
+          <p class="section-intro">Vier Projekte aus Entwicklung, Daten und Betrieb. Öffne eine Karte für einen kompakten Einblick.</p>
+        </div>
+        <div class="project-grid">
+          <button class="project" data-project="asset" data-index="01"><span class="project-meta">React · TypeScript · Qualität</span><h3>Asset Tracker</h3><p>Eine Webanwendung mit klarer Bedienlogik und automatisierten Tests.</p><span class="open">Projekt ansehen <b>+</b></span></button>
+          <button class="project" data-project="sitemap" data-index="02"><span class="project-meta">Spring Boot · React · Docker</span><h3>SitemapDiff</h3><p>Änderungen zwischen Sitemaps nachvollziehbar machen und technische Abläufe automatisieren.</p><span class="open">Projekt ansehen <b>+</b></span></button>
+          <button class="project" data-project="csv" data-index="03"><span class="project-meta">Python · FastAPI · Daten</span><h3>CSV Viewer</h3><p>CSV-Dateien prüfen, speichern und übersichtlich anzeigen.</p><span class="open">Projekt ansehen <b>+</b></span></button>
+          <button class="project" data-project="homelab" data-index="04"><span class="project-meta">k3s · GitOps · Automatisierung</span><h3>Homelab als Betriebslabor</h3><p>Eigene Infrastruktur für Deployment, Monitoring und Automatisierung.</p><span class="open">Projekt ansehen <b>+</b></span></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section process" id="arbeitsweise" aria-labelledby="process-title">
+      <div class="shell">
+        <div class="section-head">
+          <div><p class="eyebrow">Arbeitsweise</p><h2 id="process-title">Erst verstehen, dann umsetzen.</h2></div>
+          <p class="section-intro">Ich kläre Ziel und Rahmen, plane den passenden Umfang und setze die Lösung nachvollziehbar um.</p>
+        </div>
+        <div class="process-grid">
+          <ol class="process-list">
+            <li><div><h3>Ziel klären</h3><p>Nutzer, Aufgabe und Rahmenbedingungen festlegen.</p></div></li>
+            <li><div><h3>Lösung zuschneiden</h3><p>Umfang, Technik und Aufwand am tatsächlichen Nutzen ausrichten.</p></div></li>
+            <li><div><h3>Sauber umsetzen</h3><p>Mit klarer Struktur, Tests und Versionskontrolle.</p></div></li>
+            <li><div><h3>Weiterentwickeln</h3><p>Deployment, Betrieb und die nächste sinnvolle Verbesserung planen.</p></div></li>
+          </ol>
+          <aside class="process-aside"><p class="eyebrow">Der rote Faden</p><p class="quote">„Ich verbinde technische Tiefe mit dem Blick dafür, was Menschen wirklich brauchen.“</p><p>Diese Haltung kommt aus Softwareentwicklung, Selbstständigkeit, Kundenarbeit und eigener Infrastruktur.</p></aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section shell" id="weg" aria-labelledby="path-title">
+      <div class="section-head">
+        <div><p class="eyebrow">Mein Weg</p><h2 id="path-title">Ein klarer technischer Fokus.</h2></div>
+        <p class="section-intro">Erfahrungen aus Selbstständigkeit, Kommunikation und Technik prägen die Art, wie ich digitale Projekte angehe.</p>
+      </div>
+      <div class="timeline" role="list" aria-label="Berufliche Stationen">
+        <article class="moment active" role="listitem" tabindex="0" data-detail="Kreative Selbstständigkeit bedeutete: zuhören, Verantwortung übernehmen und zuverlässig ein Ergebnis liefern. Diese Erfahrung prägt bis heute, wie ich über Nutzer und Auftraggeber denke."><time>2011–2025</time><h3>Kreative Selbstständigkeit</h3><p>Fotografie, Kundenarbeit und sichtbare Ergebnisse.</p></article>
+        <article class="moment" role="listitem" tabindex="0" data-detail="Websites, Conversion und Kommunikation haben den Blick dafür geschärft, was Menschen verstehen, was sie überfordert und wann eine Botschaft konkret wird."><time>seit 2014</time><h3>Web & Kommunikation</h3><p>Websites, Marketing und digitale Kontaktpunkte.</p></article>
+        <article class="moment" role="listitem" tabindex="0" data-detail="Die Arbeit an Anwendungen im Team hat meinen technischen Schwerpunkt gefestigt: React, TypeScript, JavaScript, APIs sowie Qualität durch Tests und Versionskontrolle."><time>2024–2026</time><h3>Softwareentwicklung</h3><p>Produktorientierte Anwendungen und Teamarbeit.</p></article>
+        <article class="moment" role="listitem" tabindex="0" data-detail="Daten- und KI-Anwendungen haben gezeigt, wie wichtig eine verständliche Schnittstelle zwischen fachlicher Frage, Verarbeitung und Nutzen für den Alltag ist."><time>2026</time><h3>Daten & Automatisierung</h3><p>Python, FastAPI und praktische KI-Anwendungen.</p></article>
+        <article class="moment" role="listitem" tabindex="0" data-detail="Heute liegt der Fokus auf digitaler Produktentwicklung mit React und TypeScript. Die weiteren Erfahrungen helfen dabei, Aufgaben aus mehreren Blickwinkeln zu verstehen."><time>heute</time><h3>Klares Kernprofil</h3><p>Digitale Produkte und praktische Systeme.</p></article>
+      </div>
+      <div class="moment-detail" id="moment-detail">Kreative Selbstständigkeit bedeutete: zuhören, Verantwortung übernehmen und zuverlässig ein Ergebnis liefern. Diese Erfahrung prägt bis heute, wie ich über Nutzer und Auftraggeber denke.</div>
+    </section>
+
+    <section class="section shell" id="zusammenarbeit" aria-labelledby="work-title">
+      <div class="section-head">
+        <div><p class="eyebrow">Zusammenarbeit</p><h2 id="work-title">Wobei ich unterstütze.</h2></div>
+        <p class="section-intro">Produktentwicklung ist mein Schwerpunkt. Dazu kommen praktische digitale Lösungen für kleinere Betriebe und Teams.</p>
+      </div>
+      <div class="work-grid">
+        <article class="work-card"><small>Produktteams</small><h3>Webanwendungen weiterentwickeln</h3><p>React, TypeScript und JavaScript mit Produktdenken, klarer Kommunikation und einem Auge für stabile Umsetzung.</p></article>
+        <article class="work-card"><small>Kleine Betriebe</small><h3>Kunden und Aufgaben einfacher organisieren</h3><p>Kundenanfragen, Termine und wiederkehrende Aufgaben übersichtlich halten. Kleine Arbeitsschritte lassen sich oft automatisieren.</p></article>
+        <article class="work-card"><small>Teams & Organisationen</small><h3>Nächste Schritte festlegen</h3><p>Anforderungen sortieren, Optionen sichtbar machen und den nächsten umsetzbaren Schritt festlegen.</p></article>
+      </div>
+    </section>
+
+    <section class="section contact" id="kontakt" aria-labelledby="contact-title">
+      <div class="shell contact-grid">
+        <div><p class="eyebrow">Kontakt</p><h2 id="contact-title">Lass uns über dein <em>Vorhaben</em> sprechen.</h2><p>Ob Produktteam, interne Abläufe oder eine erste Idee: Ein paar Sätze zum Kontext reichen für den Anfang.</p></div>
+        <form class="contact-form" id="contact-form">
+          <label>Name oder Unternehmen<input name="name" autocomplete="name" placeholder="Wie darf ich dich ansprechen?"></label>
+          <label>Worum geht es?<textarea name="message" placeholder="Ein paar Sätze zum Vorhaben reichen für den Anfang."></textarea></label>
+          <button class="button" type="submit">Unverbindlich anfragen <span class="button-arrow">↗</span></button>
+          <p class="form-status" id="form-status" aria-live="polite"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="contact"><div class="shell"><span>© <span id="year"></span> Samuel Gesang</span><span>Prototyp für Samuelgesang.de · Kontaktversand folgt</span></div></footer>
+
+  <dialog id="project-modal" aria-labelledby="modal-title">
+    <div class="modal-inner"><button class="modal-close" id="modal-close" aria-label="Projektfenster schließen">×</button><p class="modal-label" id="modal-label"></p><h3 id="modal-title"></h3><div class="project-visual" id="modal-visual" aria-hidden="true"></div><p id="modal-copy"></p><div class="modal-facts" id="modal-facts"></div><p>Für den Livegang ergänzen wir je Projekt echte Screenshots, konkrete Aufgaben und die passenden Links.</p></div>
+  </dialog>
+
+  <script>
+    const lenses = {
+      team: {
+        title: 'Webanwendungen für Produktteams.',
+        text: 'Für Teams, die React und TypeScript suchen und Wert auf klare Anforderungen, gute Zusammenarbeit und saubere Umsetzung legen.',
+        points: ['React, TypeScript und JavaScript', 'Tests, CI/CD und brauchbare Demos', 'Workshops und Anforderungsklärung']
+      },
+      business: {
+        title: 'Kunden und Aufgaben einfacher organisieren.',
+        text: 'Für kleine Betriebe, die Kundenanfragen, Termine oder wiederkehrende Aufgaben übersichtlich halten und einzelne Schritte automatisieren möchten.',
+        points: ['Kundenanfragen im Blick behalten', 'Wiederkehrende Schritte automatisieren', 'Einfache Tools auswählen oder bauen']
+      },
+      network: {
+        title: 'Samuel heute kennenlernen.',
+        text: 'Ein kurzer Überblick für Menschen aus kreativen, kirchlichen oder unternehmerischen Kontexten.',
+        points: ['Produktentwicklung als Schwerpunkt', 'Kommunikation und Gestaltung', 'Fotografie als Teil der Geschichte']
+      }
+    };
+    const projects = {
+      asset: { label: 'React · TypeScript · Qualität', title: 'Asset Tracker', copy: 'Eine React-/TypeScript-Anwendung mit klarer Bedienlogik und automatisierten Tests.', facts: [['Beitrag', 'React-Oberflächen und Tests'], ['Technik', 'TypeScript, Vitest/RTL, Playwright'], ['Für die Case Study', 'Problem, UI-Entscheidung und Demo']] },
+      sitemap: { label: 'Spring Boot · React · Docker', title: 'SitemapDiff', copy: 'Eine Anwendung, die Änderungen zwischen Sitemaps sichtbar macht und technische Schritte automatisiert.', facts: [['Beitrag', 'Produktidee, Frontend und Integration'], ['Technik', 'React, Spring Boot, Docker'], ['Für die Case Study', 'Ein konkreter Workflow mit Demo']] },
+      csv: { label: 'Python · FastAPI · Daten', title: 'CSV Viewer', copy: 'CSV-Dateien validieren, speichern und serverseitig übersichtlich anzeigen.', facts: [['Beitrag', 'Datenverarbeitung und API'], ['Technik', 'FastAPI, SQLite, Docker Compose'], ['Für die Case Study', 'Upload-Ablauf und Testfall']] },
+      homelab: { label: 'k3s · GitOps · Automatisierung', title: 'Homelab als Betriebslabor', copy: 'Eigene Infrastruktur für Deployment, Monitoring und Automatisierung.', facts: [['Beitrag', 'Betrieb eines privaten k3s-Clusters'], ['Technik', 'Argo CD, Longhorn und Monitoring'], ['Für die Case Study', 'Deployment und Restore']] }
+    };
+    const projectVisuals = {
+      asset: `<svg viewBox="0 0 570 190" role="img" aria-label="Abstrakte Oberfläche für Asset Tracker"><path class="grid-line" d="M30 42H540M30 86H540M30 130H540M30 174H540"/><rect x="30" y="20" width="510" height="147" rx="10" fill="rgba(255,255,255,.06)"/><rect x="49" y="42" width="132" height="13" rx="6" class="node"/><rect x="49" y="76" width="217" height="10" rx="5" fill="rgba(255,255,255,.35)"/><rect x="49" y="105" width="165" height="10" rx="5" fill="rgba(255,255,255,.22)"/><rect x="49" y="134" width="102" height="10" rx="5" fill="rgba(255,255,255,.22)"/><rect x="310" y="62" width="182" height="72" rx="9" fill="rgba(255,255,255,.11)"/><circle cx="338" cy="88" r="10" class="node-soft"/><path class="wire" d="M366 82h96M366 104h64"/><text x="48" y="157" class="label">ASSET OVERVIEW</text></svg>`,
+      sitemap: `<svg viewBox="0 0 570 190" role="img" aria-label="Abstrakte Sitemap-Grafik"><path class="wire" d="M285 42V68M285 68H160M285 68H410M160 68v25M410 68v25M160 114v30M410 114v30M93 144h134M343 144h134"/><circle cx="285" cy="35" r="14" class="node"/><circle cx="160" cy="105" r="13" class="node-soft"/><circle cx="410" cy="105" r="13" class="node-warm"/><circle cx="93" cy="151" r="10" fill="rgba(255,255,255,.7)"/><circle cx="160" cy="151" r="10" fill="rgba(255,255,255,.7)"/><circle cx="227" cy="151" r="10" fill="rgba(255,255,255,.7)"/><circle cx="343" cy="151" r="10" fill="rgba(255,255,255,.7)"/><circle cx="410" cy="151" r="10" fill="rgba(255,255,255,.7)"/><circle cx="477" cy="151" r="10" fill="rgba(255,255,255,.7)"/><text x="258" y="19" class="label">COMPARE</text><text x="126" y="90" class="label">ALT</text><text x="376" y="90" class="label">NEU</text></svg>`,
+      csv: `<svg viewBox="0 0 570 190" role="img" aria-label="Abstrakte Datentabelle für CSV Viewer"><rect x="46" y="26" width="478" height="138" rx="10" fill="rgba(255,255,255,.07)"/><path class="grid-line" d="M46 63H524M46 97H524M46 131H524M166 26V164M316 26V164M429 26V164"/><rect x="59" y="38" width="85" height="11" rx="5" class="node"/><rect x="180" y="38" width="100" height="11" rx="5" class="node-soft"/><rect x="330" y="38" width="72" height="11" rx="5" class="node-warm"/><circle cx="70" cy="80" r="6" fill="rgba(255,255,255,.75)"/><circle cx="70" cy="114" r="6" fill="rgba(255,255,255,.55)"/><circle cx="70" cy="148" r="6" fill="rgba(255,255,255,.35)"/><text x="464" y="49" class="label">CSV</text></svg>`,
+      homelab: `<svg viewBox="0 0 570 190" role="img" aria-label="Abstrakte Infrastruktur-Grafik"><path class="wire" d="M285 33V63M285 63H165M285 63H405M165 63v34M405 63v34M165 118h240"/><rect x="255" y="17" width="60" height="28" rx="8" class="node"/><rect x="127" y="94" width="76" height="31" rx="8" class="node-soft"/><rect x="367" y="94" width="76" height="31" rx="8" class="node-warm"/><rect x="245" y="139" width="80" height="30" rx="8" fill="rgba(255,255,255,.72)"/><text x="266" y="36" fill="#171716" class="label">GIT</text><text x="141" y="114" fill="#171716" class="label">K3S</text><text x="378" y="114" fill="#171716" class="label">OPS</text><text x="258" y="158" fill="#171716" class="label">LIVE</text></svg>`
+    };
+    const header = document.querySelector('.site-header');
+    addEventListener('scroll', () => header.classList.toggle('is-scrolled', scrollY > 8), { passive: true });
+    document.querySelector('#year').textContent = new Date().getFullYear();
+    const menuButton = document.querySelector('#menu-button');
+    const navLinks = document.querySelector('#nav-links');
+    menuButton.addEventListener('click', () => { const open = navLinks.classList.toggle('open'); menuButton.setAttribute('aria-expanded', open); });
+    navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navLinks.classList.remove('open'); menuButton.setAttribute('aria-expanded', 'false'); }));
+    const lensButtons = document.querySelectorAll('.lens');
+    const lensTitle = document.querySelector('#lens-title');
+    const lensText = document.querySelector('#lens-text');
+    const lensPoints = document.querySelector('#lens-points');
+    function setLens(key) {
+      const lens = lenses[key];
+      lensButtons.forEach(button => { const selected = button.dataset.lens === key; button.setAttribute('aria-selected', selected); });
+      lensTitle.textContent = lens.title; lensText.textContent = lens.text; lensPoints.innerHTML = lens.points.map(point => `<div>${point}</div>`).join('');
+      document.querySelector('#lens-copy').setAttribute('aria-labelledby', `lens-${key}`);
+    }
+    lensButtons.forEach(button => button.addEventListener('click', () => setLens(button.dataset.lens)));
+    const modal = document.querySelector('#project-modal');
+    const modalLabel = document.querySelector('#modal-label'); const modalTitle = document.querySelector('#modal-title'); const modalCopy = document.querySelector('#modal-copy'); const modalFacts = document.querySelector('#modal-facts'); const modalVisual = document.querySelector('#modal-visual');
+    document.querySelectorAll('.project').forEach(project => project.addEventListener('click', () => { const key = project.dataset.project; const data = projects[key]; modalLabel.textContent = data.label; modalTitle.textContent = data.title; modalVisual.innerHTML = projectVisuals[key]; modalCopy.textContent = data.copy; modalFacts.innerHTML = data.facts.map(([key, value]) => `<div><small>${key}</small><strong>${value}</strong></div>`).join(''); modal.showModal(); document.querySelector('#modal-close').focus(); }));
+    document.querySelector('#modal-close').addEventListener('click', () => modal.close());
+    const moments = document.querySelectorAll('.moment'); const momentDetail = document.querySelector('#moment-detail');
+    function setMoment(moment) { moments.forEach(item => item.classList.toggle('active', item === moment)); momentDetail.textContent = moment.dataset.detail; }
+    moments.forEach(moment => { moment.addEventListener('click', () => setMoment(moment)); moment.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setMoment(moment); } }); });
+    document.querySelector('#contact-form').addEventListener('submit', event => { event.preventDefault(); document.querySelector('#form-status').textContent = 'Danke. Der Kontaktversand wird vor dem Livegang eingerichtet.'; });
+  </script>
+</body>
+</html>
