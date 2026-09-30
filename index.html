@@ -392,6 +392,7 @@
     const modalLabel = document.querySelector('#modal-label'); const modalTitle = document.querySelector('#modal-title'); const modalCopy = document.querySelector('#modal-copy'); const modalFacts = document.querySelector('#modal-facts'); const modalVisual = document.querySelector('#modal-visual');
     document.querySelectorAll('.project').forEach(project => project.addEventListener('click', () => { const key = project.dataset.project; const data = projects[key]; modalLabel.textContent = data.label; modalTitle.textContent = data.title; modalVisual.innerHTML = projectVisuals[key]; modalCopy.textContent = data.copy; modalFacts.innerHTML = data.facts.map(([key, value]) => `<div><small>${key}</small><strong>${value}</strong></div>`).join(''); modal.showModal(); document.querySelector('#modal-close').focus(); }));
     document.querySelector('#modal-close').addEventListener('click', () => modal.close());
+    modal.addEventListener('click', event => { if (event.target === modal) modal.close(); });
     const moments = document.querySelectorAll('.moment'); const momentDetail = document.querySelector('#moment-detail');
     function setMoment(moment) { moments.forEach(item => item.classList.toggle('active', item === moment)); momentDetail.textContent = moment.dataset.detail; }
     moments.forEach(moment => { moment.addEventListener('click', () => setMoment(moment)); moment.addEventListener('keydown', event => { if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); setMoment(moment); } }); });
